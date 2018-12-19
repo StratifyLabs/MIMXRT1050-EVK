@@ -1,0 +1,14 @@
+{
+    "description": "Stratify OS board support package for the MIMXRT1050-EVK.",
+    "github": "https://github.com/StratifyLabs/MIMXRT1050-EVK",
+    "name": "MIMXRT1050-EVK",
+    "permissions": "public",
+    "publisher": "Stratify Labs, Inc",
+    "tags": "stm32,arm,cortex-m7",
+    "type": "os",
+    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
+    "version": "0.1",
+    "hardwareId": "0x00000011",
+    "timestamp": 1545111052,
+    "documentId": "<invalid>"
+}
