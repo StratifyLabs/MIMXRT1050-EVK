@@ -6,14 +6,14 @@
 #ifndef SL_CONFIG_H_
 #define SL_CONFIG_H_
 
-#define SL_CONFIG_VERSION_STRING "0.10"
-#define SL_CONFIG_VERSION_BCD 0x0A
-#define SL_CONFIG_DOCUMENT_ID "Loy74Ukm6dVsLMqQ7T6g"
-#define SL_CONFIG_NAME "Nucleo-F412ZG"
+#define SL_CONFIG_VERSION_STRING "0.1"
+#define SL_CONFIG_VERSION_BCD 0x01
+#define SL_CONFIG_DOCUMENT_ID "<invalid>"
+#define SL_CONFIG_NAME "MIMXRT1050-EVK"
 #define SL_CONFIG_TYPE "os"
 #define SL_CONFIG_PUBLISHER "Stratify Labs, Inc"
 #define SL_CONFIG_PERMISSIONS "public"
-#define SL_CONFIG_HARDWARE_ID_STRING "<invalid>"
+#define SL_CONFIG_HARDWARE_ID_STRING "0x00000011"
 
 #endif
 

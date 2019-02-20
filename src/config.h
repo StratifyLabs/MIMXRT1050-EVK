@@ -38,17 +38,6 @@ limitations under the License.
 #define SOS_BOARD_EVENT_HANDLER board_event_handler
 #define SOS_BOARD_TRACE_EVENT board_trace_event
 
-#define STM32_ARCH_O_FLAGS STM32_CONFIG_FLAG_IS_HSE_ON
-#define STM32_ARCH_CLOCK_PLLM 4
-#define STM32_ARCH_CLOCK_PLLN 96
-#define STM32_ARCH_CLOCK_PLLP 2
-#define STM32_ARCH_CLOCK_PLLQ 4
-#define STM32_ARCH_CLOCK_PLLR 2
-#define STM32_ARCH_CLOCK_AHB_CLOCK_DIVIDER 1
-#define STM32_ARCH_CLOCK_APB1_CLOCK_DIVIDER 2
-#define STM32_ARCH_CLOCK_APB2_CLOCK_DIVIDER 1
-#define STM32_ARCH_CLOCK_VOLTAGE_SCALE 1
-#define STM32_ARCH_CLOCK_FLASH_LATENCY 3
 
 #define SOS_BOARD_DEBUG_FLAGS (MCU_DEBUG_INFO | MCU_DEBUG_SYS)
 
@@ -91,17 +80,13 @@ limitations under the License.
 #endif
 
 /* Uncomment to add ARM CMSIS DSP libraries to the BSP
- * 
+ *
  * See [ARM CMSIS Declaration](https://github.com/StratifyLabs/StratifyOS-CMSIS/blob/master/arm_dsp_api_declaration.h)
  * for more detailed link configuration switches.
- * 
- * 
+ *
+ *
  */
-#define SOS_BOARD_ARM_DSP_API_Q7 0
-#define SOS_BOARD_ARM_DSP_API_Q15 0
-#define SOS_BOARD_ARM_DSP_API_Q31 0
-#define SOS_BOARD_ARM_DSP_API_F32 0
-#define SOS_BOARD_ARM_DSP_CONVERSION_API 0
+
 
 //--------------------------------------------Hardware Pins-------------------------------------------------
 

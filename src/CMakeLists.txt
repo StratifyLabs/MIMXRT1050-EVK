@@ -11,4 +11,8 @@ set(SOURCES
   ${SOURCES_PREFIX}/board_symbols.c
   ${SOURCES_PREFIX}/SystemClock_Config.c
   ${SOURCES_PREFIX}/kernel_request.c
+	${SOURCES_PREFIX}/fsl_flexspi_nor_boot.c
+	${SOURCES_PREFIX}/fsl_flexspi_nor_boot.h
+	${SOURCES_PREFIX}/fsl_flexspi_nor_flash.c
+	${SOURCES_PREFIX}/fsl_flexspi_nor_flash.h
   PARENT_SCOPE)

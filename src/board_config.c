@@ -70,6 +70,12 @@ void board_event_handler(int event, void * args){
 			break;
 
 		case MCU_BOARD_CONFIG_EVENT_ROOT_INITIALIZE_CLOCK:
+
+
+			while(1){
+				sos_led_root_enable(0);
+			}
+
 			SystemClock_Config();
 			break;
 

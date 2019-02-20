@@ -15,9 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-
 #include <sos/symbols.h>
-
 #include "config.h"
 
+#if defined __imxrt1052flexspi
+
+u32 const symbols_table[] = { 0 };
+
+#else
 #include <sos/symbols/table.h>
+#endif
+
