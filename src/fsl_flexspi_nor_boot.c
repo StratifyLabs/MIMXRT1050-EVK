@@ -36,18 +36,16 @@
 
 extern int _text; //provided by the linker script at the beginning of the text section
 
-
-
 __attribute__((section(".boot_hdr.ivt")))
 const ivt image_vector_table = {
-  IVT_HEADER,                         /* IVT Header */
-  (uint32_t)&_text,                         /* Image  Entry Function */
-  IVT_RSVD,                           /* Reserved = 0 */
-  (uint32_t)DCD_ADDRESS,              /* Address where DCD information is stored */
-  (uint32_t)BOOT_DATA_ADDRESS,        /* Address where BOOT Data Structure is stored */
-  (uint32_t)&image_vector_table,      /* Pointer to IVT Self (absolute address */
-  (uint32_t)CSF_ADDRESS,              /* Address where CSF file is stored */
-  IVT_RSVD                            /* Reserved = 0 */
+  .hdr = IVT_HEADER,                         /* IVT Header */
+  .entry = (uint32_t)&_text,                         /* Image  Entry Function */
+  .reserved1 = IVT_RSVD,                           /* Reserved = 0 */
+  .dcd = (uint32_t)DCD_ADDRESS,              /* Address where DCD information is stored */
+  .boot_data = (uint32_t)BOOT_DATA_ADDRESS,        /* Address where BOOT Data Structure is stored */
+  .self = (uint32_t)&image_vector_table,      /* Pointer to IVT Self (absolute address) */
+  .csf = (uint32_t)CSF_ADDRESS,              /* Address where CSF file is stored */
+  .reserved2 = IVT_RSVD                            /* Reserved = 0 */
 };
 
 __attribute__((section(".boot_hdr.boot_data")))
@@ -58,11 +56,7 @@ const BOOT_DATA_T boot_data = {
   0xFFFFFFFF  				  /* empty - extra data word */
 };
 
-#if defined(__CC_ARM) || defined(__GNUC__)
-    __attribute__((section(".boot_hdr.dcd_data")))
-#elif defined(__ICCARM__)
-#pragma location=".boot_hdr.dcd_data"
-#endif
+__attribute__((section(".boot_hdr.dcd_data")))
 const uint8_t dcd_sdram[1072] = {
 /*0000*/ 0xD2, 0x04, 0x30, 0x41, 0xCC, 0x03, 0xAC, 0x04, 0x40, 0x0F, 0xC0, 0x68, 0xFF, 0xFF, 0xFF, 0xFF, 
 /*0010*/ 0x40, 0x0F, 0xC0, 0x6C, 0xFF, 0xFF, 0xFF, 0xFF, 0x40, 0x0F, 0xC0, 0x70, 0xFF, 0xFF, 0xFF, 0xFF, 

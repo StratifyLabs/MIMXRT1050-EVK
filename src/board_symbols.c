@@ -18,7 +18,9 @@ limitations under the License.
 #include <sos/symbols.h>
 #include "config.h"
 
-#if defined __imxrt1052flexspi
+//#if defined __imxrt1052flexspi
+
+#if 1
 
 u32 const symbols_table[] = { 0 };
 

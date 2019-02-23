@@ -36,12 +36,7 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#if defined(__CC_ARM) || defined(__GNUC__)
-    __attribute__((section(".boot_hdr.conf")))
-#elif defined(__ICCARM__)
-#pragma location=".boot_hdr.conf"
-#endif
-
+__attribute__((section(".boot_hdr.conf")))
 const flexspi_nor_config_t hyperflash_config =
 {
     .memConfig =

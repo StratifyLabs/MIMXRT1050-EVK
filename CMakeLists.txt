@@ -6,6 +6,7 @@ file(GLOB LINKER_SCRIPTS)
 add_subdirectory(src)
 list(APPEND KERNEL_SOURCELIST
 	${SOURCES}
+	imxrt.cfg
 	${CMAKE_SOURCE_DIR}/README.md
 	)
 
@@ -42,7 +43,7 @@ set(SOS_BSP_LIBRARIES son_kernel sos_mcu_imxrt1052_debug)
 set(SOS_BSP_CONFIG debug)
 include(${SOS_TOOLCHAIN_CMAKE_PATH}/sos-bsp.cmake)
 
-set(SOS_BSP_START_ADDRESS 0x60020000)
+set(SOS_BSP_START_ADDRESS 0x60002000)
 set(SOS_BSP_DEVICE imxrt1052flexspi)
 set(SOS_BSP_SOURCELIST ${KERNEL_SOURCELIST})
 set(SOS_BSP_CONFIG flexspi_release)
