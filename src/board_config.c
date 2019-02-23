@@ -22,6 +22,9 @@ limitations under the License.
 #include <mcu/debug.h>
 #include <cortexm/task.h>
 #include <sos/link/types.h>
+#include <mcu/arch/imxrt/mimxrt1052/fsl_common.h>
+#include <mcu/arch/imxrt/mimxrt1052/fsl_iomuxc.h>
+
 #include "board_config.h"
 
 #define TRACE_COUNT 8
@@ -71,8 +74,20 @@ void board_event_handler(int event, void * args){
 
 		case MCU_BOARD_CONFIG_EVENT_ROOT_INITIALIZE_CLOCK:
 
+			CLOCK_EnableClock(kCLOCK_Iomuxc);          /* iomuxc clock (iomuxc_clk_enable): 0x03u */
+
+			IOMUXC_SetPinMux(
+						IOMUXC_GPIO_AD_B0_09_GPIO1_IO09,
+						0);
+
+			IOMUXC_SetPinConfig(
+						IOMUXC_GPIO_AD_B0_09_GPIO1_IO09,
+						IOMUXC_SW_PAD_CTL_PAD_DSE(7));
+
 			sos_led_root_enable(0);
-			while(1){}
+			while(1){
+				sos_led_root_error(0);
+			}
 
 			SystemClock_Config();
 			break;
