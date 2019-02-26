@@ -51,7 +51,7 @@ git clone https://github.com/StratifyLabs/MIMXRT1050-EVK.git
 sl os.build:path=MIMXRT1050-EVK
 ```
 
-Now you need to copy the file MIMXRT1050-EVK/build_flexspi_debug/MIMXRT1050-EVK.bin
+Now you need to copy the file `MIMXRT1050-EVK/build_flexspi_debug/MIMXRT1050-EVK.bin`
 to the RT1050-EVK mbed drive mount and then hit the reset button.
 
 ### Expected Output
