@@ -67,11 +67,4 @@ INFO:SYS:init /
 INFO:SYS:Started Filesystem Apps 0
 INFO:SYS:Open RTC
 WARN:SYS:RTC not opened
-INFO:SYS:MCU Debug start
-INFO:SYS:Enter default thread
-INFO:SYS:init /dev
-INFO:SYS:init /
-INFO:SYS:Started Filesystem Apps 0
-INFO:SYS:Open RTC
-WARN:SYS:RTC not opened
 ```
