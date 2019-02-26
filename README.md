@@ -39,7 +39,7 @@ sl sdk.install # installs the SDK
 # the next commands configure the workspace (current working directory) to build and pull latest libraries
 sl sdk.update:library=StratifyOS,cmo='-DSOS_SKIP_CMAKE=OFF -DBUILD_ALL=ON -DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON'
 sl sdk.update:library=StratifyOS-mcu-imxrt
-sl sdk.uddate:library=StratifyAPI,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON'
+sl sdk.update:library=StratifyAPI,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON'
 sl sdk.update #actually does the pulling and building
 ```
 
