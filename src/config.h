@@ -26,7 +26,7 @@ limitations under the License.
 //openocd -f interface/stlink-v2-1.cfg -f target/stm32f4x_stlink.cfg
 
 
-#define SOS_BOARD_SYSTEM_CLOCK 96000000
+#define SOS_BOARD_SYSTEM_CLOCK 528000000
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
 
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512

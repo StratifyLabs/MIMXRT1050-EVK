@@ -39,7 +39,7 @@ const mcu_board_config_t mcu_board_config = {
 			.rts = {0xff, 0xff}
 		},
 		.freq = 115200,
-		.o_flags = UART_FLAG_IS_PARITY_NONE | UART_FLAG_IS_STOP1,
+		.o_flags = UART_FLAG_SET_LINE_CODING_DEFAULT,
 		.width = 8
 	},
 	.o_flags = 0, //LED is active low

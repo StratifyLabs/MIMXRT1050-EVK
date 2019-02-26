@@ -120,8 +120,6 @@ void board_event_handler(int event, void * args){
 
 		case MCU_BOARD_CONFIG_EVENT_START_INIT:
 
-			sos_led_root_error(0);
-
 			break;
 
 		case MCU_BOARD_CONFIG_EVENT_START_LINK:
