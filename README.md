@@ -54,5 +54,24 @@ sl os.build:path=MIMXRT1050-EVK
 Now you need to copy the file MIMXRT1050-EVK/build_flexspi_debug/MIMXRT1050-EVK.bin
 to the RT1050-EVK mbed drive mount and then hit the reset button.
 
+### Expected Output
+
 If you monitor the UART output, you will see the system booting up. You will
 also see the green light turn on and off after each time the reset button is pushed.
+
+```
+INFO:SYS:MCU Debug start
+INFO:SYS:Enter default thread
+INFO:SYS:init /dev
+INFO:SYS:init /
+INFO:SYS:Started Filesystem Apps 0
+INFO:SYS:Open RTC
+WARN:SYS:RTC not opened
+INFO:SYS:MCU Debug start
+INFO:SYS:Enter default thread
+INFO:SYS:init /dev
+INFO:SYS:init /
+INFO:SYS:Started Filesystem Apps 0
+INFO:SYS:Open RTC
+WARN:SYS:RTC not opened
+```
