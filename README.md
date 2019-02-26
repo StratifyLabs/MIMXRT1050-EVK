@@ -1,52 +1,57 @@
 # MIMXRT1050-EVK
+
 Stratify OS board support package for the MIMXRT1050-EVK
 
 
+## Development Environment Setup
+
+To develop device drivers and to customize this OS package you will need to
+run the following commands in a Bash shell (Windows Git Bash or Mac OS X Terminal)
+
+- Install `sl` command line tool (see https://app.stratifylabs.co for more details)
+- Install the SDK. Pull latest libraries needed for imxrt development
+- Build and Flash the OS package
+
+
+### Install `sl` command line Tool on Mac
+
 ```
-git clone https://github.com/StratifyLabs/StratifySDK.git
-cd StratifySDK
-cmake -P StratifySDK.cmake
+mkdir -p /Applications/StratifyLabs-SDK/Tools/gcc/bin
+curl -L -o /Applications/StratifyLabs-SDK/Tools/gcc/bin/sl 'https://stratifylabs.page.link/slmac'
+chmod 755 /Applications/StratifyLabs-SDK/Tools/gcc/bin/sl
+echo 'export PATH=/Applications/StratifyLabs-SDK/Tools/gcc/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
 ```
 
-Build https://github.com/StratifyLabs/StratifyOS-mcu-imxrt library.
+### Install `sl` command line Tool on Mac
+```
+mkdir -p /C/StratifyLabs-SDK/Tools/gcc/bin
+curl -L -o /C/StratifyLabs-SDK/Tools/gcc/bin/sl.exe 'https://stratifylabs.page.link/slwin'
+chmod 755 /C/StratifyLabs-SDK/Tools/gcc/bin/sl.exe
+echo 'export PATH=/C/StratifyLabs-SDK/Tools/gcc/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+```
 
+### Install the SDK and pull latest libraries
+
+```
+sl sdk.install # installs the SDK
+# the next commands configure the workspace (current working directory) to build and pull latest libraries
+sl sdk.update:library=StratifyOS,cmo='-DSOS_SKIP_CMAKE=OFF -DBUILD_ALL=ON -DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON'
+sl sdk.update:library=StratifyOS-mcu-imxrt
+sl sdk.uddate:library=StratifyAPI,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON'
+sl sdk.update #actually does the pulling and building
+```
+
+### Build and Flash
 
 ```
 git clone https://github.com/StratifyLabs/MIMXRT1050-EVK.git
-cd MIMXRT1050-EVK
-mkdir cmake_arm
-cd cmake_arm
-cmake ..
-cmake --build . --target size_debug -- -j 8
+sl os.build:path=MIMXRT1050-EVK
 ```
 
+Now you need to copy the file MIMXRT1050-EVK/build_flexspi_debug/MIMXRT1050-EVK.bin
+to the RT1050-EVK mbed drive mount and then hit the reset button.
 
-```
-openocd -f interface/cmsis-dap.cfg -f ./MIMXRT1050-EVK/imxrt.cfg
-
-
-telnet localhost 4444
-load_image ./MIMXRT1050-EVK/build_debug/MIMXRT1050-EVK.bin 0 bin
-```
-
-
-Default RAM config is 128K ITCM 128K DTCM and 256K OCRAM (all 512KB seem to be availabe in OCRAM)
-
-
-SCB->VTOR = 0xE000E000UL + 0x0D00UL + 8 = 0xE000ED08
-
-```
-reset halt
-load_image ./MIMXRT1050-EVK/build_debug/MIMXRT1050-EVK.bin 0 bin
-reg msp 0x20010000
-mww 0xE000ED08 0
-resume 1
-
-rbp 0x3108
-bp 0x3e3c 2
-resume 1
-
-
-cortex_m reset_config vectreset
-
-rbp 0x3c72
+If you monitor the UART output, you will see the system booting up. You will
+also see the green light turn on and off after each time the reset button is pushed.
