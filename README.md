@@ -44,6 +44,8 @@ sl sdk.update:library=StratifyAPI,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH
 sl sdk.update # actually does the pulling and building
 ```
 
+Subsequently, the SDK can be updated with `sl sdk.update` called in the same workspace directory as the commands above.
+
 ### Build and Flash
 
 ```
