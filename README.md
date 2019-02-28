@@ -81,9 +81,11 @@ INFO:LINK:Open link driver
 INFO:LINK:start link update
 ```
 
+### Connecting over Link Protocol
 
-Ping using `sl`
+The link protocol runs on LPUART3 which is on pins 1 (TX) and 2 (RX) of J22. The debug output happens on the mbed serial communications port. The mbed port resets the device whenever it is opened so the link protocol can't run smoothly on that interface.
 
+You need to connect LPUART3 to a USB to serial converter to ping the device.
 
 ```
 sl conn.connect:baudrate=115200
