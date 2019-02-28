@@ -63,10 +63,57 @@ also see the green light turn on and off after each time the reset button is pus
 
 ```
 INFO:SYS:MCU Debug start
+INFO:MALLOC:Get more memory
+INFO:MALLOC:a:0 0x200106B4 2048 0x20010008 0x20010008
 INFO:SYS:Enter default thread
 INFO:SYS:init /dev
 INFO:SYS:init /
 INFO:SYS:Started Filesystem Apps 0
 INFO:SYS:Open RTC
 WARN:SYS:RTC not opened
+INFO:LINK:Open link driver
+INFO:LINK:start link update
+```
+
+
+Ping using `sl`
+
+
+```
+sl conn.connect:baudrate=115200
+
+- connection.connect:
+	 options:
+			retry: 5
+			delay: 500
+			path: <any>
+			serialNumber: <any>
+			parity: none
+			baudrate: 115200
+			stopbits: 1
+	 output:
+			system.information:
+				 path: /dev/tty.usbmodem1412301
+				 name: MIMXRT1050-EVK
+				 serialNumber: 0000000065F823AC65F823AC65F823AC
+				 hardwareId: 00000024
+				 projectId: <invalid>
+				 bspVersion: 0.1
+				 sosVersion: 3.8.0db
+				 cpuArchitecture: v7em_f5dh
+				 cpuFreqency: 528000000
+				 applicationSignature: 0
+				 bspGitHash: df4f62e
+				 sosGitHash: e0ed670
+				 mcuGitHash: 4c2dd32
+	 result: success
+
+```
+
+## Debugging
+
+Connect using openOCD.
+
+```
+openocd -f interface/cmsis-dap.cfg -f ./MIMXRT1050-EVK/imxrt.cfg
 ```
