@@ -5,6 +5,11 @@ Stratify OS board support package for the MIMXRT1050-EVK
 
 ## Development Environment Setup
 
+### Prerequisites
+
+- git (Mac, type `git --version` in Terminal to install) or [Git Bash](https://gitforwindows.org/) (Windows)
+- cmake (using `sl sdk.install:cmake` or install from https://cmake.org/download/)
+
 To develop device drivers and to customize this OS package you will need to
 run the following commands in a Bash shell (Windows Git Bash or Mac OS X Terminal)
 
@@ -35,6 +40,7 @@ source ~/.bash_profile
 ### Install the SDK and pull latest libraries
 
 ```
+sl --update # follow instructions if there is an update ready
 sl sdk.install # installs the SDK
 # the next commands configure the workspace (current working directory) to build and pull latest libraries
 sl sdk.update:library=StratifyOS,cmo='-DSOS_SKIP_CMAKE=OFF -DBUILD_ALL=ON -DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5DH=ON'
@@ -108,6 +114,12 @@ sl conn.connect:baudrate=115200
 				 mcuGitHash: 4c2dd32
 	 result: success
 
+```
+
+View the /dev folder
+
+```
+sl conn.connect:baudrate=115200 fs.list:path=/dev
 ```
 
 ## Debugging
