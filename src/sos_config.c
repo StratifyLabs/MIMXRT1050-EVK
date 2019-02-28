@@ -39,6 +39,7 @@ limitations under the License.
 #include "config.h"
 #include "sl_config.h"
 #include "link_config.h"
+#include "link_config_uart.h"
 
 
 //--------------------------------------------Stratify OS Configuration-------------------------------------------------
@@ -54,7 +55,7 @@ const sos_board_config_t sos_board_config = {
 	.sys_id = SL_CONFIG_DOCUMENT_ID,
 	.sys_memory_size = SOS_BOARD_SYSTEM_MEMORY_SIZE,
 	.start = sos_default_thread,
-	.start_args = &link_transport,
+	.start_args = &link_transport_uart,
 	.start_stack_size = SOS_DEFAULT_START_STACK_SIZE,
 	.socket_api = 0,
 	.request = 0,
@@ -82,30 +83,16 @@ SOS_DECLARE_TASK_TABLE(SOS_BOARD_TASK_TOTAL);
  *
  *
  */
-//USART2
-UARTFIFO_DECLARE_CONFIG_STATE(uart1_fifo, 1024,
-										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-										SOS_BOARD_USART2_RX_PORT, SOS_BOARD_USART2_RX_PIN, //RX
-										SOS_BOARD_USART2_TX_PORT, SOS_BOARD_USART2_TX_PIN, //TX
-										0xff, 0xff,
-										0xff, 0xff);
-#if !defined __debug
-//USART3
+
+
+//LPUART3
 UARTFIFO_DECLARE_CONFIG_STATE(uart2_fifo, 1024,
 										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
 										SOS_BOARD_USART3_RX_PORT, SOS_BOARD_USART3_RX_PIN, //RX
 										SOS_BOARD_USART3_TX_PORT, SOS_BOARD_USART3_TX_PIN, //TX
 										0xff, 0xff,
 										0xff, 0xff);
-#endif
 
-//USART6
-UARTFIFO_DECLARE_CONFIG_STATE(uart5_fifo, 1024,
-										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
-										SOS_BOARD_USART6_RX_PORT, SOS_BOARD_USART6_RX_PIN, //RX
-										SOS_BOARD_USART6_TX_PORT, SOS_BOARD_USART6_TX_PIN, //TX
-										0xff, 0xff,
-										0xff, 0xff);
 
 //I2C1
 I2C_DECLARE_CONFIG_MASTER(i2c0,
@@ -122,12 +109,9 @@ I2C_DECLARE_CONFIG_MASTER(i2c1,
 								  SOS_BOARD_I2C2_SCL_PORT, SOS_BOARD_I2C2_SCL_PIN); //SCL
 
 
-
-
-
 FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
-CFIFO_DECLARE_CONFIG_STATE_4(board_fifo, 256);
+CFIFO_DECLARE_CONFIG_STATE_4(board_fifo, 16);
 
 #if !defined SOS_BOARD_USB_PORT
 #define SOS_BOARD_USB_PORT 0
@@ -149,10 +133,10 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
-	DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	DEVFS_DEVICE("pio0", mcu_pio, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOA
 	DEVFS_DEVICE("pio1", mcu_pio, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOB
@@ -163,10 +147,10 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("pio6", mcu_pio, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOG
 	DEVFS_DEVICE("pio7", mcu_pio, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOH
 
-	DEVFS_DEVICE("spi0", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("spi1", mcu_spi, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("spi2", mcu_spi, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("spi3", mcu_spi, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("spi0", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("spi1", mcu_spi, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("spi2", mcu_spi, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("spi3", mcu_spi, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM1
 	DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM2
@@ -178,11 +162,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM8
 	//Does this chip have more timers?
 
-	DEVFS_DEVICE("uart1", uartfifo, 0, &uart1_fifo_config, &uart1_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
-	#if !defined __debug
-	DEVFS_DEVICE("uart2", uartfifo, 0, &uart2_fifo_config, &uart2_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
-	#endif
-	DEVFS_DEVICE("uart5", uartfifo, 0, &uart5_fifo_config, &uart5_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("uart2", mcu_uart, 2, &uart2_fifo_config, &uart2_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_TERMINATOR
 };
 

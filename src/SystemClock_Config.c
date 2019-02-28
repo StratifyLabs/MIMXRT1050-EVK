@@ -54,6 +54,7 @@ void BOARD_BootClockRUN(void)
 {
 	/* Boot ROM did initialize the XTAL, here we only sets external XTAL OSC freq */
 
+
 	CLOCK_SetXtalFreq(24000000U);
 	CLOCK_SetRtcXtalFreq(32768U);
 
@@ -71,7 +72,7 @@ void BOARD_BootClockRUN(void)
 	CLOCK_InitSysPll(&sysPllConfig); /* Configure SYS PLL to 528M */
 #endif
 #ifndef XIP_EXTERNAL_FLASH
-	CLOCK_InitUsb1Pll(&usb1PllConfig); /* Configure USB1 PLL to 480M */
+	//CLOCK_InitUsb1Pll(&usb1PllConfig); /* Configure USB1 PLL to 480M */
 #endif
 	CLOCK_SetDiv(kCLOCK_ArmDiv, 0x1); /* Set ARM PODF to 0, divide by 2 */
 	CLOCK_SetDiv(kCLOCK_AhbDiv, 0x0); /* Set AHB PODF to 0, divide by 1 */

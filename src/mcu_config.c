@@ -29,7 +29,7 @@ const mcu_board_config_t mcu_board_config = {
 	.core_cpu_freq = SOS_BOARD_SYSTEM_CLOCK,
 	.core_periph_freq = SOS_BOARD_SYSTEM_CLOCK,
 	.usb_max_packet_zero = 64,
-	.debug_uart_port = 0,
+	.debug_uart_port = 0, //LPUART1 is the mbed UART
 	.debug_uart_attr = {
 		.pin_assignment =
 		{
@@ -45,5 +45,5 @@ const mcu_board_config_t mcu_board_config = {
 	.o_flags = 0, //LED is active low
 	.event_handler = board_event_handler,
 	.led = {0, 9}, //GPIO_AD_B0_09 is GPIO1_IO09 (port 0 pin 9)
-	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS
+	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_LINK | MCU_DEBUG_MALLOC
 };

@@ -67,6 +67,8 @@ void board_event_handler(int event, void * args){
 			} else {
 				mcu_debug_log_error(MCU_DEBUG_SYS, "Fatal Error unknown");
 			}
+
+			sos_led_root_error(0);
 			while(1){
 				;
 			}
@@ -78,6 +80,7 @@ void board_event_handler(int event, void * args){
 
 			CLOCK_EnableClock(kCLOCK_Iomuxc);          /* iomuxc clock (iomuxc_clk_enable): 0x03u */
 
+			//LED
 			IOMUXC_SetPinMux(
 						IOMUXC_GPIO_AD_B0_09_GPIO1_IO09,
 						0);
@@ -112,6 +115,22 @@ void board_event_handler(int event, void * args){
 																		  Pull / Keep Select Field: Keeper
 																		  Pull Up / Down Config. Field: 100K Ohm Pull Down
 																		  Hyst. Enable Field: Hysteresis Disabled */
+
+#if 1
+			IOMUXC_SetPinMux(
+				 IOMUXC_GPIO_AD_B1_06_LPUART3_TX,
+				 0U);
+			IOMUXC_SetPinMux(
+				 IOMUXC_GPIO_AD_B1_07_LPUART3_RX,
+				 0U);
+			IOMUXC_SetPinConfig(
+				 IOMUXC_GPIO_AD_B1_06_LPUART3_TX,
+				 0x10B0u);
+			IOMUXC_SetPinConfig(
+				 IOMUXC_GPIO_AD_B1_07_LPUART3_RX,
+				 0x10B0u);
+#endif
+
 
 			SystemClock_Config();
 
