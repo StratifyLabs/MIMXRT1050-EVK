@@ -37,10 +37,10 @@ source ~/.bash_profile
 ```
 sl sdk.install # installs the SDK
 # the next commands configure the workspace (current working directory) to build and pull latest libraries
-sl sdk.update:library=StratifyOS,cmo='-DSOS_SKIP_CMAKE=OFF -DBUILD_ALL=ON -DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON'
+sl sdk.update:library=StratifyOS,cmo='-DSOS_SKIP_CMAKE=OFF -DBUILD_ALL=ON -DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5DH=ON'
 sl sdk.update:library=StratifyOS-mcu-imxrt
-sl sdk.update:library=son?sgfx,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON' # optional for application development
-sl sdk.update:library=StratifyAPI,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5SH=ON' # optional for application development
+sl sdk.update:library=son?sgfx,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5DH=ON' # optional for application development
+sl sdk.update:library=StratifyAPI,cmo='-DBUILD_ARM_ALL=OFF -DBUILD_ARM_V7EM_F5DH=ON' # optional for application development
 sl sdk.update # actually does the pulling and building
 ```
 
