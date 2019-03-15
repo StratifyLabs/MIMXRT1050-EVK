@@ -21,6 +21,7 @@ limitations under the License.
 #include <fcntl.h>
 #include <errno.h>
 #include <mcu/mcu.h>
+#include <mcu/appfs.h>
 #include <mcu/debug.h>
 #include <mcu/periph.h>
 #include <device/sys.h>
@@ -40,6 +41,7 @@ limitations under the License.
 #include "sl_config.h"
 #include "link_config.h"
 #include "link_config_uart.h"
+#include "ram_device.h"
 
 
 //--------------------------------------------Stratify OS Configuration-------------------------------------------------
@@ -129,6 +131,10 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
+#if defined BOOTLOADER_MODE
+	DEVFS_DEVICE("ram0", ram_device, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFBLK), //Execution RAM
+#endif
+
 	//MCU peripherals
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
@@ -137,6 +143,7 @@ const devfs_device_t devfs_list[] = {
 	//DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+
 
 	DEVFS_DEVICE("pio0", mcu_pio, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOA
 	DEVFS_DEVICE("pio1", mcu_pio, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOB
@@ -180,9 +187,33 @@ const devfs_device_t devfs_list[] = {
  *
  */
 
+#if !defined BOOTLOADER_MODE
+//The bootloader won't be running apps so it doesn't need /app
+#define RAM_PAGES (128) //32768*1024 = 32MB of RAM
+
+u32 ram_usage_table[APPFS_RAM_USAGE_WORDS(RAM_PAGES)] MCU_SYS_MEM;
+
+const appfs_mem_config_t appfs_mem_config = {
+	.usage_size = sizeof(ram_usage_table),
+	.usage = ram_usage_table,
+	.system_ram_page = (u32)-1, //system RAM is not located in the APPFS memory sections
+	.flash_driver = 0,
+	.section_count = 1,
+	.sections = {
+		{ .o_flags = MEM_FLAG_IS_RAM, .page_count = RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x80000000 }
+		//{ .o_flags = MEM_FLAG_IS_RAM, .page_count = RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20200000 }
+	}
+};
+
+const devfs_device_t mem0 = DEVFS_DEVICE("mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SOS_USER_ROOT, S_IFBLK);
+#endif
+
+
 //const devfs_device_t mem0 = DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFBLK);
 const sysfs_t sysfs_list[] = {
-	//APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
+#if !defined BOOTLOADER_MODE
+	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
+#endif
 	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
 	SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 	SYSFS_TERMINATOR

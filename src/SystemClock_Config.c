@@ -5,7 +5,6 @@
 
 #define BOARD_XTAL0_CLK_HZ 24000000U
 
-static void BOARD_BootClockGate(void);
 static void BOARD_BootClockRUN(void);
 
 /*******************************************************************************
@@ -38,7 +37,9 @@ void SystemClock_Config(void)
 	BOARD_BootClockRUN();
 }
 
-static void BOARD_BootClockGate(void)
+#if 0
+static void BOARD_BootClockGate(void);
+void BOARD_BootClockGate(void)
 {
 	/* Disable all unused peripheral clock */
 	CCM->CCGR0 = 0x00C0000FU;
@@ -49,6 +50,7 @@ static void BOARD_BootClockGate(void)
 	CCM->CCGR5 = 0xF003330FU;
 	CCM->CCGR6 = 0x00FC0F00U;
 }
+#endif
 
 void BOARD_BootClockRUN(void)
 {

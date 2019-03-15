@@ -131,3 +131,10 @@ Connect using openOCD.
 ```
 openocd -f interface/cmsis-dap.cfg -f ./MIMXRT1050-EVK/imxrt.cfg
 ```
+
+## Writing an image directly to RAM
+
+```
+sl fs.write:source=host@MIMXRT1050-EVK/build_debug/MIMXRT1050-EVK.bin,dest=device@/dev/ram0
+sl task.signal:id=1,signal=ALARM
+```

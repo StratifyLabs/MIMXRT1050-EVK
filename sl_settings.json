@@ -1,6 +1,7 @@
 {
     "description": "Stratify OS board support package for the MIMXRT1050-EVK.",
     "github": "https://github.com/StratifyLabs/MIMXRT1050-EVK",
+    "isBeta": true,
     "name": "MIMXRT1050-EVK",
     "permissions": "public",
     "publisher": "Stratify Labs, Inc",

@@ -15,16 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-#include <sos/symbols.h>
-#include "config.h"
 
-//#if defined __imxrt1052flexspi
+#ifndef RAM_DEVICE_H_
+#define RAM_DEVICE_H_
 
-//#if defined BOOTLOADER_MODE
-#if 0
-//bootloader won't run apps so it doesn't need to install additional symbols
-u32 const symbols_table[] = { 0 };
-#else
-#include <sos/symbols/table.h>
-#endif
+#include <sos/fs/types.h>
 
+int ram_device_open(const devfs_handle_t * handle);
+int ram_device_write(const devfs_handle_t * handle, devfs_async_t * async);
+int ram_device_read(const devfs_handle_t * handle, devfs_async_t * async);
+int ram_device_ioctl(const devfs_handle_t * handle, int request, void * ctl);
+int ram_device_close(const devfs_handle_t * handle);
+
+#endif /* RAM_DEVICE_H_ */
