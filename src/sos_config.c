@@ -187,9 +187,10 @@ const devfs_device_t devfs_list[] = {
  *
  */
 
-#if !defined BOOTLOADER_MODE
+//#if !defined BOOTLOADER_MODE
+#if 1
 //The bootloader won't be running apps so it doesn't need /app
-#define RAM_PAGES (128) //32768*1024 = 32MB of RAM
+#define RAM_PAGES (1024) //32768*1024 = 32MB of RAM
 
 u32 ram_usage_table[APPFS_RAM_USAGE_WORDS(RAM_PAGES)] MCU_SYS_MEM;
 
@@ -211,7 +212,8 @@ const devfs_device_t mem0 = DEVFS_DEVICE("mem0", appfs_mem, 0, &appfs_mem_config
 
 //const devfs_device_t mem0 = DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFBLK);
 const sysfs_t sysfs_list[] = {
-#if !defined BOOTLOADER_MODE
+//#if !defined BOOTLOADER_MODE
+#if 1
 	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 #endif
 	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
