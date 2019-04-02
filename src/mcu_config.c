@@ -46,6 +46,6 @@ const mcu_board_config_t mcu_board_config = {
 	.o_flags = 0,
 	.event_handler = board_event_handler,
 	.led = {0, 9}, //GPIO_AD_B0_09 is GPIO1_IO09 (port 0 pin 9)
-	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_APPFS | MCU_DEBUG_USER1,
+	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_APPFS | MCU_DEBUG_USER1 | MCU_DEBUG_USB | MCU_DEBUG_LINK,
 	.os_mpu_text_mask = 0x0000ffff
 };

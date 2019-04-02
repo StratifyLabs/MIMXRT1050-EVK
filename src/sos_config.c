@@ -57,7 +57,7 @@ const sos_board_config_t sos_board_config = {
 	.sys_id = SL_CONFIG_DOCUMENT_ID,
 	.sys_memory_size = SOS_BOARD_SYSTEM_MEMORY_SIZE,
 	.start = sos_default_thread,
-	.start_args = &link_transport_uart,
+	.start_args = &link_transport,
 	.start_stack_size = SOS_DEFAULT_START_STACK_SIZE,
 	.socket_api = 0,
 	.request = 0,
@@ -168,6 +168,8 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("tmr6", mcu_tmr, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr7", mcu_tmr, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM8
 	//Does this chip have more timers?
+
+	DEVFS_DEVICE("link-phy-usb", usbfifo, 0, &sos_link_transport_usb_fifo_cfg, &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	DEVFS_DEVICE("uart2", mcu_uart, 2, &uart2_fifo_config, &uart2_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_TERMINATOR
