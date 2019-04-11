@@ -35,6 +35,7 @@ limitations under the License.
 #include <sos/fs/appfs.h>
 #include <sos/fs/devfs.h>
 #include <sos/fs/sffs.h>
+#include <sos/fs/fatfs.h>
 #include <sos/sos.h>
 
 #include "config.h"
@@ -42,7 +43,13 @@ limitations under the License.
 #include "link_config.h"
 #include "link_config_uart.h"
 #include "ram_device.h"
+#include "ramdisk.h"
 
+//#define EXT_RAM_START (0x80000000)
+#define EXT_RAM_PAGES (4*1024) //(32768) // = 32MB of RAM @ 1kb page size
+#define APPFS_RAM_PAGES (EXT_RAM_PAGES / 2)
+#define RAMDISK_OFFSET (APPFS_RAM_PAGES * MCU_RAM_PAGE_SIZE) // after appfs
+#define RAMDISK_PAGES (EXT_RAM_PAGES - APPFS_RAM_PAGES) / 4 //FIXME: remove /4
 
 //--------------------------------------------Stratify OS Configuration-------------------------------------------------
 const sos_board_config_t sos_board_config = {
@@ -115,6 +122,12 @@ FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
 CFIFO_DECLARE_CONFIG_STATE_4(board_fifo, 16);
 
+const ramdisk_config_t ramdisk_config = {
+	.start = 0x80000000 + RAMDISK_OFFSET,
+	.page_size = MCU_RAM_PAGE_SIZE,
+	.page_cnt = RAMDISK_PAGES,
+};
+
 #if !defined SOS_BOARD_USB_PORT
 #define SOS_BOARD_USB_PORT 0
 #endif
@@ -130,6 +143,8 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("link-phy-usb", usbfifo, SOS_BOARD_USB_PORT, &sos_link_transport_usb_fifo_cfg, &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+
+	DEVFS_DEVICE("drive0", ramdisk, 0, &ramdisk_config, 0, 0666, SOS_USER_ROOT, S_IFBLK),
 
 #if defined BOOTLOADER_MODE
 	DEVFS_DEVICE("ram0", ram_device, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFBLK), //Execution RAM
@@ -192,9 +207,8 @@ const devfs_device_t devfs_list[] = {
 //#if !defined BOOTLOADER_MODE
 #if 1
 //The bootloader won't be running apps so it doesn't need /app
-#define RAM_PAGES (1024) //32768*1024 = 32MB of RAM
 
-u32 ram_usage_table[APPFS_RAM_USAGE_WORDS(RAM_PAGES)] MCU_SYS_MEM;
+u32 ram_usage_table[APPFS_RAM_USAGE_WORDS(APPFS_RAM_PAGES)] MCU_SYS_MEM;
 
 const appfs_mem_config_t appfs_mem_config = {
 	.usage_size = sizeof(ram_usage_table),
@@ -203,12 +217,14 @@ const appfs_mem_config_t appfs_mem_config = {
 	.flash_driver = 0,
 	.section_count = 1,
 	.sections = {
-		{ .o_flags = MEM_FLAG_IS_RAM, .page_count = RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x80000000 }
-		//{ .o_flags = MEM_FLAG_IS_RAM, .page_count = RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20200000 }
+		{ .o_flags = MEM_FLAG_IS_RAM, .page_count = APPFS_RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x80000000 }
+		//{ .o_flags = MEM_FLAG_IS_RAM, .page_count = APPFS_RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20200000 }
 	}
 };
 
 const devfs_device_t mem0 = DEVFS_DEVICE("mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SOS_USER_ROOT, S_IFBLK);
+
+FATFS_DECLARE_CONFIG_STATE(fatfs, (sysfs_list + 1), "drive0", 0, 0, 0);
 #endif
 
 
@@ -219,8 +235,8 @@ const sysfs_t sysfs_list[] = {
 	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 #endif
 	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
+	FATFS_MOUNT("/tmp", &fatfs_config, SYSFS_ALL_ACCESS),
 	SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 	SYSFS_TERMINATOR
 };
-
 
