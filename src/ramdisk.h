@@ -23,8 +23,6 @@
 #include "sos/fs/devfs.h"
 #include "sos/dev/drive.h"
 
-//typedef struct {
-//} ramdisk_state_t;
 
 typedef struct {
     int start;
