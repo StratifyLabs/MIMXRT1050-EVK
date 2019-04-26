@@ -5,6 +5,8 @@ set(SOURCES
   ${SOURCES_PREFIX}/config.h
 	${SOURCES_PREFIX}/ram_device.c
 	${SOURCES_PREFIX}/ram_device.h
+	${SOURCES_PREFIX}/ramdisk.c
+	${SOURCES_PREFIX}/ramdisk.h
   ${SOURCES_PREFIX}/link_config.c
   ${SOURCES_PREFIX}/link_config.h
 	${SOURCES_PREFIX}/link_config_uart.c
