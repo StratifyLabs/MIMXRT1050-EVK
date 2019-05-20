@@ -37,6 +37,7 @@ limitations under the License.
 #include <sos/fs/sffs.h>
 #include <sos/fs/fatfs.h>
 #include <sos/sos.h>
+#include <sos/fs/assetfs.h>
 
 #include "config.h"
 #include "sl_config.h"
@@ -95,7 +96,7 @@ SOS_DECLARE_TASK_TABLE(SOS_BOARD_TASK_TOTAL);
 
 
 //LPUART3
-UARTFIFO_DECLARE_CONFIG_STATE(uart2_fifo, 1024,
+UARTFIFO_DECLARE_CONFIG_STATE(uart2_fifo, 1024, 1,
 										UART_FLAG_SET_LINE_CODING_DEFAULT, 8, 115200,
 										SOS_BOARD_USART3_RX_PORT, SOS_BOARD_USART3_RX_PIN, //RX
 										SOS_BOARD_USART3_TX_PORT, SOS_BOARD_USART3_TX_PIN, //TX
@@ -218,13 +219,25 @@ const appfs_mem_config_t appfs_mem_config = {
 	.section_count = 1,
 	.sections = {
 		{ .o_flags = MEM_FLAG_IS_RAM, .page_count = APPFS_RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x80000000 }
-		//{ .o_flags = MEM_FLAG_IS_RAM, .page_count = APPFS_RAM_PAGES, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20200000 }
+		//{ .o_flags = MEM_FLAG_IS_RAM, .page_count = 128, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20200000 }
 	}
 };
 
 const devfs_device_t mem0 = DEVFS_DEVICE("mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SOS_USER_ROOT, S_IFBLK);
 
 FATFS_DECLARE_CONFIG_STATE(fatfs, (sysfs_list + 1), "drive0", 0, 0, 0);
+#endif
+
+
+#if 0
+ASSETFS_FILE(map, "../build_flexspi_release/MIMXRT1050-EVK_flexspi_release.map");
+
+const assetfs_config_t asset_config = {
+	.count = 1,
+	.entries = {
+		ASSETFS_ENTRY("map.map", map, 0666)
+	}
+};
 #endif
 
 
@@ -235,6 +248,9 @@ const sysfs_t sysfs_list[] = {
 	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 #endif
 	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
+#if 0
+	ASSETFS_MOUNT("/assets", &asset_config, SYSFS_ALL_ACCESS),
+#endif
 	FATFS_MOUNT("/tmp", &fatfs_config, SYSFS_ALL_ACCESS),
 	SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 	SYSFS_TERMINATOR
