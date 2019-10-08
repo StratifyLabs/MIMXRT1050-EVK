@@ -136,7 +136,7 @@ int ramdisk_ioctl(const devfs_handle_t * handle, int request, void * ctl){
     case I_DRIVE_GETINFO:
         info->o_flags = DRIVE_FLAG_ERASE_BLOCKS | DRIVE_FLAG_ERASE_DEVICE | DRIVE_FLAG_INIT;
         info->o_events = 0;
-        info->address_size = 512;
+        info->addressable_size = 512;
         info->bitrate = SOS_BOARD_SYSTEM_CLOCK;
         info->erase_block_size = 4096;
         info->erase_block_time = 0;
