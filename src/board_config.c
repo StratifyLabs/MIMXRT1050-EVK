@@ -217,7 +217,6 @@ void board_event_handler(int event, void * args){
 #else
 			//OS mode
 			SystemClock_Config();
-
 #endif
 
 			break;
