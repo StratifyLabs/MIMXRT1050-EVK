@@ -245,14 +245,14 @@ const assetfs_config_t asset_config = {
 const sysfs_t sysfs_list[] = {
 //#if !defined BOOTLOADER_MODE
 #if 1
-	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
+	APPFS_MOUNT("/app", &mem0, 0777, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 #endif
-	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
+	DEVFS_MOUNT("/dev", devfs_list, 0777, SYSFS_READONLY_ACCESS), //the list of devices
 #if 0
 	ASSETFS_MOUNT("/assets", &asset_config, SYSFS_ALL_ACCESS),
 #endif
 	FATFS_MOUNT("/tmp", &fatfs_config, SYSFS_ALL_ACCESS),
-	SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
+	SYSFS_MOUNT("/", sysfs_list, 0777, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 	SYSFS_TERMINATOR
 };
 
