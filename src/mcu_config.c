@@ -6,7 +6,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+	 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,9 +42,15 @@ const mcu_board_config_t mcu_board_config = {
 		.o_flags = UART_FLAG_SET_LINE_CODING_DEFAULT,
 		.width = 8
 	},
-	.o_flags = MCU_BOARD_CONFIG_FLAG_ENABLE_CACHE,
+	.o_flags =
+	MCU_BOARD_CONFIG_FLAG_ENABLE_CACHE |
+	0,
 	.event_handler = board_event_handler,
 	.led = {0, 9}, //GPIO_AD_B0_09 is GPIO1_IO09 (port 0 pin 9)
-	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_APPFS | MCU_DEBUG_USER1 | MCU_DEBUG_USB,
+	.o_mcu_debug = MCU_DEBUG_INFO |
+	MCU_DEBUG_SYS |
+	MCU_DEBUG_APPFS |
+	MCU_DEBUG_USER1 |
+	MCU_DEBUG_USB,
 	.os_mpu_text_mask = 0x0000ffff
 };

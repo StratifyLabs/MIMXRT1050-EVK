@@ -138,11 +138,12 @@ int ramdisk_ioctl(const devfs_handle_t * handle, int request, void * ctl){
         info->o_events = 0;
         info->addressable_size = 512;
         info->bitrate = SOS_BOARD_SYSTEM_CLOCK;
-        info->erase_block_size = 4096;
+		  info->erase_block_size = 512;
         info->erase_block_time = 0;
         info->erase_device_time = 0;
-        info->num_write_blocks = config->page_cnt * config->page_size / 4096;
-        info->write_block_size = 4096;
+		  //specify how many 512 byte blocks that are available
+		  info->num_write_blocks = config->page_cnt * config->page_size / 512;
+		  info->write_block_size = 512;
         mcu_debug_log_info(MCU_DEBUG_SYS, "%s GETINFO", __func__);
         break;
 
