@@ -102,6 +102,24 @@ const ramdisk_config_t ramdisk_config = {
 #define SOS_BOARD_USB_PORT 0
 #endif
 
+#if LINK_PROTOCOL == 2
+#define USB_FIFO_BUFFER_SIZE (LINK2_MAX_PACKET_SIZE)
+static char usb_fifo_buffer[USB_FIFO_BUFFER_SIZE] MCU_SYS_MEM;
+static char usb_read_buffer[SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT_SIZE] MCU_SYS_MEM;
+const usbfifo_config_t link2_transport_usb_fifo_cfg = {
+	.endpoint = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT,
+	.endpoint_size = SOS_LINK_TRANSPORT_USB_BULK_ENDPOINT_SIZE,
+	.read_buffer = usb_read_buffer,
+	.fifo = {
+		.buffer = usb_fifo_buffer,
+		.size = USB_FIFO_BUFFER_SIZE
+	}
+};
+#define LINK_CONFIG &link2_transport_usb_fifo_cfg
+#else
+#define LINK_CONFIG &sos_link_transport_usb_fifo_cfg
+#endif
+
 /* This is the list of devices that will show up in the /dev folder.
  */
 const devfs_device_t devfs_list[] = {
@@ -110,7 +128,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("fifo", cfifo, 0, &board_fifo_config, &board_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("stdio-out", fifo, 0, &stdio_out_config, &stdio_out_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("stdio-in", fifo, 0, &stdio_in_config, &stdio_in_state, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("link-phy-usb", usbfifo, SOS_BOARD_USB_PORT, &sos_link_transport_usb_fifo_cfg, &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
+	DEVFS_DEVICE("link-phy-usb", usbfifo, SOS_BOARD_USB_PORT, LINK_CONFIG, &sos_link_transport_usb_fifo_state, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 

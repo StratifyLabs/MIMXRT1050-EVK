@@ -1,3 +1,4 @@
 
-cmake_arm/
+cmake_*
 *.user
+build_*

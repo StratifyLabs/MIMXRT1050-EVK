@@ -166,6 +166,7 @@ limitations under the License.
 #define RAMDISK_OFFSET (APPFS_RAM_PAGES * MCU_RAM_PAGE_SIZE) // after appfs
 #define RAMDISK_PAGES (EXT_RAM_PAGES - APPFS_RAM_PAGES) / 4 //FIXME: remove /4
 
+#define LINK_PROTOCOL 2
 
 
 #endif /* CONFIG_H_ */

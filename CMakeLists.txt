@@ -19,8 +19,9 @@ add_subdirectory(src)
 list(APPEND KERNEL_SOURCELIST
 	${SOURCES}
 	imxrt.cfg
-	${CMAKE_SOURCE_DIR}/README.md
-	)
+  ${CMAKE_SOURCE_DIR}/README.md
+  ${CMAKE_SOURCE_DIR}/sl_settings.json
+  )
 
 #Change to boot sources
 set(SOURCES "")
@@ -31,7 +32,7 @@ list(APPEND BOOT_SOURCELIST ${SOURCES})
 set(SOS_ARCH v7em_f5dh)
 set(SOS_DEVICE imxrt1052ram)
 set(SOS_DEVICE_FAMILY imxrt1052)
-set(SOS_HARDWARD_ID 0x00000024)
+set(SOS_HARDWARD_ID 0x00000026)
 set(SOS_LIBRARIES son_kernel sos_mcu_imxrt1052 fatfs_kernel)
 set(SOS_INCLUDE_DIRECTORIES ${TOOLCHAIN_INC_DIR}/mcu/arch/imxrt/cmsis)
 set(SOS_DEFINITIONS CPU_MIMXRT1052CVJ5B=1)

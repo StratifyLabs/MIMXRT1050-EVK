@@ -51,6 +51,7 @@ const mcu_board_config_t mcu_board_config = {
 	MCU_DEBUG_SYS |
 	MCU_DEBUG_APPFS |
 	MCU_DEBUG_USER1 |
+	MCU_DEBUG_LINK |
 	MCU_DEBUG_USB,
 	.os_mpu_text_mask = 0x0000ffff
 };
