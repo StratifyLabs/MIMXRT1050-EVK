@@ -166,7 +166,18 @@ limitations under the License.
 #define RAMDISK_OFFSET (APPFS_RAM_PAGES * MCU_RAM_PAGE_SIZE) // after appfs
 #define RAMDISK_PAGES (EXT_RAM_PAGES - APPFS_RAM_PAGES) / 4 //FIXME: remove /4
 
-#define LINK_PROTOCOL 2
+/*
+ * USB bulk won't accept more than endpoint size bytes at a time.
+ * Link2 requires the USB bulk to handle multiple incoming
+ * transfers at a time.
+ *
+ * The USB is high speed. So one way to improve could be to
+ * use a 512 byte bulk endpoint. Now link uses 64 byte bulk endpoints.
+ * Link1 uses 64 byte packets. Link2 uses 2048 byte packets. So
+ * another protocol option (or flag is needed).
+ *
+ */
+#define LINK_PROTOCOL 1
 
 
 #endif /* CONFIG_H_ */

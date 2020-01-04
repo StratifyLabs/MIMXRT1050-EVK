@@ -235,6 +235,15 @@ void board_event_handler(int event, void * args){
 			break;
 
 		case MCU_BOARD_CONFIG_EVENT_START_LINK:
+			mcu_debug_log_info(MCU_DEBUG_USER1, "Format /tmp");
+			if( mkfs("/tmp") < 0 ){
+				mcu_debug_log_info(MCU_DEBUG_USER1, "failed to format /tmp");
+			} else {
+				if( mount("/tmp") < 0 ){
+					mcu_debug_log_info(MCU_DEBUG_USER1, "failed to mount /tmp");
+				}
+			}
+
 			mcu_debug_log_info(MCU_DEBUG_USER1, "Start LED %d");
 			sos_led_startup();
 			break;

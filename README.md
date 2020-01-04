@@ -138,3 +138,9 @@ openocd -f interface/cmsis-dap.cfg -f ./MIMXRT1050-EVK/imxrt.cfg
 sl fs.write:source=host@MIMXRT1050-EVK/build_debug/MIMXRT1050-EVK.bin,dest=device@/dev/ram0
 sl task.signal:id=1,signal=ALARM
 ```
+
+## Build and Install using Mbed
+
+```
+sl os.build:path=MIMXRT1050-EVK,clean,build=flexspi_debug fs.copy:source=host@MIMXRT1050-EVK/build_flexspi_debug/MIMXRT1050-EVK.bin,dest=host@/Volumes/RT1050-EVK/MIMXRT1050-EVK.bin
+```
