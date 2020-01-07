@@ -31,7 +31,7 @@
 #include "cortexm/task.h"
 
 int ramdisk_open(const devfs_handle_t * handle){
-    mcu_debug_log_info(MCU_DEBUG_SYS, "%s", __func__);
+    mcu_debug_log_info(MCU_DEBUG_USER2, "%s", __func__);
     return 0;
 }
 
@@ -44,7 +44,7 @@ int ramdisk_read(const devfs_handle_t * handle, devfs_async_t * async){
     uint16_t *sdram = (uint16_t *)((async->loc * 512) + config->start);
     uint16_t *dest = async->buf;
 
-    mcu_debug_log_info(MCU_DEBUG_SYS, "%s loc= %p nbyte= %d", __func__, sdram, async->nbyte);
+    mcu_debug_log_info(MCU_DEBUG_USER2, "%s loc= %p nbyte= %d", __func__, sdram, async->nbyte);
 
     // use 16-bit interface on EVKB
     int len = async->nbyte / 2; // localize our loop endpoint for thread/ISR safety
@@ -53,12 +53,12 @@ int ramdisk_read(const devfs_handle_t * handle, devfs_async_t * async){
       dest[i] = sdram[i];
     }
     if (len % 2 > 0) {
-      mcu_debug_log_error(MCU_DEBUG_SYS, "%s loc= %p nbyte= %d odd not handled\n", __func__, sdram, async->nbyte);
+      mcu_debug_log_error(MCU_DEBUG_USER2, "%s loc= %p nbyte= %d odd not handled\n", __func__, sdram, async->nbyte);
       //FIXME
     }
 
     if (async->nbyte >= 512) {
-      mcu_debug_log_info (MCU_DEBUG_SYS, "%s [w0]= %0x [w255]= %0x", __func__,
+      mcu_debug_log_info (MCU_DEBUG_USER2, "%s [w0]= %0x [w255]= %0x", __func__,
           sdram[0], sdram[255]);
     }
 
@@ -74,7 +74,7 @@ int ramdisk_write(const devfs_handle_t * handle, devfs_async_t * async){
     uint16_t *sdram = (uint16_t *)((async->loc * 512) + config->start);
     uint16_t *src = async->buf;
 
-    mcu_debug_log_info(MCU_DEBUG_SYS, "%s loc= %p nbyte= %d", __func__, sdram, async->nbyte);
+    mcu_debug_log_info(MCU_DEBUG_USER2, "%s loc= %p nbyte= %d", __func__, sdram, async->nbyte);
     
     // use 16-bit interface on EVKB
     int len = async->nbyte / 2; // localize our loop endpoint for thread/ISR safety
@@ -83,12 +83,12 @@ int ramdisk_write(const devfs_handle_t * handle, devfs_async_t * async){
     }
     mcu_core_clean_data_cache();
     if (len % 2 > 0) {
-      mcu_debug_log_error(MCU_DEBUG_SYS, "%s loc= %p nbyte= %d odd not handled\n", __func__, sdram, async->nbyte);
+      mcu_debug_log_error(MCU_DEBUG_USER2, "%s loc= %p nbyte= %d odd not handled\n", __func__, sdram, async->nbyte);
       //FIXME
     }
 
     if (async->nbyte >= 512) {
-      mcu_debug_log_info (MCU_DEBUG_SYS, "%s [w0]= %0x [w255]= %0x", __func__,
+      mcu_debug_log_info (MCU_DEBUG_USER2, "%s [w0]= %0x [w255]= %0x", __func__,
           src[0], src[255]);
     }
 
@@ -120,9 +120,9 @@ int ramdisk_ioctl(const devfs_handle_t * handle, int request, void * ctl){
             }
 
             if (o_flags & DRIVE_FLAG_INIT ) {
-              mcu_debug_log_info(MCU_DEBUG_SYS, "%s SETATTR INIT success", __func__);
+              mcu_debug_log_info(MCU_DEBUG_USER2, "%s SETATTR INIT success", __func__);
             } else {
-              mcu_debug_log_info(MCU_DEBUG_SYS, "%s SETATTR ERASE success", __func__);
+              mcu_debug_log_info(MCU_DEBUG_USER2, "%s SETATTR ERASE success", __func__);
             }
             return 0;
         }
@@ -130,7 +130,7 @@ int ramdisk_ioctl(const devfs_handle_t * handle, int request, void * ctl){
         break;
 
     case I_DRIVE_ISBUSY:
-        //mcu_debug_log_info(MCU_DEBUG_SYS, "%s ISBUSY", __func__);
+        //mcu_debug_log_info(MCU_DEBUG_USER2, "%s ISBUSY", __func__);
         return 0;
 
     case I_DRIVE_GETINFO:
@@ -144,18 +144,18 @@ int ramdisk_ioctl(const devfs_handle_t * handle, int request, void * ctl){
 		  //specify how many 512 byte blocks that are available
 		  info->num_write_blocks = config->page_cnt * config->page_size / 512;
 		  info->write_block_size = 512;
-        mcu_debug_log_info(MCU_DEBUG_SYS, "%s GETINFO", __func__);
+		  mcu_debug_log_info(MCU_DEBUG_USER2, "%s GETINFO", __func__);
         break;
 
     default:
-        mcu_debug_log_error(MCU_DEBUG_SYS, "%s default EINVAL", __func__);
+        mcu_debug_log_error(MCU_DEBUG_USER2, "%s default EINVAL", __func__);
         return SYSFS_SET_RETURN(EINVAL);
     }
     return 0;
 }
 
 int ramdisk_close(const devfs_handle_t * handle){
-    mcu_debug_log_info(MCU_DEBUG_SYS, "%s", __func__);
+    mcu_debug_log_info(MCU_DEBUG_USER2, "%s", __func__);
     return 0;
 }
 
